@@ -17,7 +17,6 @@ class SnakeSprite(Sprite):
 
     def update(self, position):
         x,y = position
-        
         self.rect.y = y
         self.rect.x = x
 

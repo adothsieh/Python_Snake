@@ -9,12 +9,12 @@ class Snake:
         """Initialize the snake and its starting position"""
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen.get_rect()
-        
+        self.ai_game = ai_game
         self.direction = None
         self.body = pygame.sprite.Group()
         self.positions = [(ai_game.screen.get_width() /2, ai_game.screen.get_height() / 2)]
         print(self.positions[0])
-        start_body = SnakeSprite(ai_game, 'head', self.positions[0])
+        start_body = SnakeSprite(self.ai_game, 'head', self.positions[0])
         self.body.add(start_body)
         
     def update(self):
@@ -32,6 +32,10 @@ class Snake:
             body.draw_body()
             counter += 1
 
+    def grow_snake(self):
+        self.positions.append(self.positions[-1])
+        new_body = SnakeSprite(self.ai_game, 'body', self.positions[-1])
+        self.body.add(new_body)
 
     def add_tuples(self, tupleA, tupleB):
         return tuple(a + b for a, b in zip(tupleA, tupleB))

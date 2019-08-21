@@ -1,14 +1,17 @@
 import pygame
-from pygame.sprite import food_sprite
+from pygame.sprite import Sprite
 
 class FoodSprite(Sprite):
     """Class that manages where the food appears"""
     def __init__(self, ai_game, snake, position):
 
-        super.__init__()
+        super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
-        self.color = self.settings.body_colour
+        self.color = self.settings.food_colour
 
-        self.rect = pygame.Rect(w, h, self.settings.body_width, self.settings.body_height)
-        self.eaten = False
+        w, h = position
+        self.rect = pygame.Rect(w, h, self.settings.food_width, self.settings.food_height)
+
+    def draw_food(self):
+        pygame.draw.rect(self.screen, self.color, self.rect)
