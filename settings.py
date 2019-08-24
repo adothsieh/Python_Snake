@@ -8,6 +8,7 @@ class Settings:
         self.screen_width = 300
         self.screen_height = 300
         self.bg_color = (230, 230, 230)
+        self.screen_cent = (self.screen_width / 2, self.screen_height / 2)
 
         #Body settings
         self.body_height = 10

@@ -11,31 +11,37 @@ class Snake:
         self.screen_rect = ai_game.screen.get_rect()
         self.ai_game = ai_game
         self.direction = None
-        self.body = pygame.sprite.Group()
         self.positions = [(ai_game.screen.get_width() /2, ai_game.screen.get_height() / 2)]
-        print(self.positions[0])
-        start_body = SnakeSprite(self.ai_game, 'head', self.positions[0])
-        self.body.add(start_body)
+        self.ai_game.grid[self.positions[0]] = True
+        self.head = SnakeSprite(self.ai_game, 'head', self.positions[0])
+        self.body = pygame.sprite.Group()
         
     def update(self):
         # check if head has gone past left/right/top/bottom limits
+        
         if self.direction:
-            last_pos = self.positions[-1]
-            new_pos = self.add_tuples(last_pos, self.direction)
-            self.positions.append(new_pos)
-            self.positions.pop(0)
+            new_pos = self.add_tuples(self.positions[0], self.direction)
+            self.ai_game.grid[(new_pos)] = True
+            self.positions.insert(0, new_pos)
+            old_pos = self.positions.pop(-1)
+            self.ai_game.grid[(old_pos)] = False
 
-        counter = 0
+        self.head.update(self.positions[0])
+        self.head.draw_body()
 
+        counter = 1
         for body in self.body:
+            #print(self.positions[counter])
             body.update(self.positions[counter])
             body.draw_body()
             counter += 1
 
     def grow_snake(self):
-        self.positions.append(self.positions[-1])
-        new_body = SnakeSprite(self.ai_game, 'body', self.positions[-1])
+        new_body = SnakeSprite(self.ai_game, 'body', self.positions[0])
         self.body.add(new_body)
+        new_pos = self.add_tuples(self.positions[0], self.direction)
+        self.head.update(new_pos)
+        self.positions.insert(0, new_pos)
 
     def add_tuples(self, tupleA, tupleB):
         return tuple(a + b for a, b in zip(tupleA, tupleB))
